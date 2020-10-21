@@ -1,0 +1,63 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Compile",
+			"command": "C:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\gcc.exe",
+			"args": [
+				"-g",
+				"-c",
+				"${file}",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.o"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "Compile Libs",
+			"command": "C:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\gcc.exe",
+			"args": [
+				"-c",
+				"DLL/drawer.c",
+				"-o",
+				"${fileDirname}\\drawer.o"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "Linker",
+			"command": "C:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\gcc.exe",
+			"args": [
+				"-o",
+				"${fileBasenameNoExtension}",
+				"${fileDirname}\\${fileBasenameNoExtension}.o",
+				"-L.",
+				"-ldrawer",
+				"-lgdi32",
+				"-lcomdlg32"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
+		},
+		{
+            "label": "Build GCC",
+            "dependsOrder": "sequence",
+			"dependsOn":["Compile", "Linker"],
+			"group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Clear",
+            "command": "Remove-Item",
+            "args": [
+				"${fileBasenameNoExtension}.*",
+				"-Exclude *.c"
+            ]
+        }
+	]
+}
